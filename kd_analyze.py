@@ -17,7 +17,7 @@ class KDAnalyzer:
         # Building dictionary of key-strike pairs; ignoring pairs with interval greater
         # than 1 second
         pairs = dict()
-        for i in xrange(0,len(self.asciicodes)-1):
+        for i in range(0,len(self.asciicodes)-1):
             key = str(self.asciicodes[i])+':'+str(self.asciicodes[i+1])
             time_interval = numpy.abs(self.timestamps[i+1]-self.timestamps[i])
             if(time_interval < self.time_interval_threshold):
@@ -30,12 +30,12 @@ class KDAnalyzer:
 
 
 # Loading data
-print "Loading data..."
+print("Loading data...")
 
 filename = "data/steven_gettysburg.txt"
 time_interval_threshold = 1.0
 
-print "File: ",filename
+print("File: ",filename)
 
 analyzer = KDAnalyzer(filename,time_interval_threshold)
 asciicodes = analyzer.asciicodes
@@ -45,10 +45,10 @@ pairs = analyzer.pairs
 
 # Printing the pairs, but only if the count threshold is high enough.
 count_threshold = 10
-print "Pairs with count >= "+str(count_threshold)+":"
+print("Pairs with count >= "+str(count_threshold)+":")
 for pair in pairs:
-    if( len(pairs[pair]) >= count_threshold):
+    if( len(pairs[pair]) >= count_threshold ):
         times_arr = numpy.array(pairs[pair])
         count = len(times_arr)
         average_time_interval = times_arr.sum()/count
-        print "Pair: ",pair," Count: ",count," Average Time Interval: ",average_time_interval
+        print("Pair: ",pair," Count: ",count," Average Time Interval: ",average_time_interval)
