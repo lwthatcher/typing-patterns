@@ -57,9 +57,11 @@ def onkeypress(ofh, textarea, standardtext, typedsofar):
         # without the following line
         nonlocal typedsofar
         eventchar = event.char
+        if eventchar == '\r':
+            eventchar = '\n'
         if len(eventchar) > 0:
             ofh.write('%d %f\n' % (ord(eventchar), time.time()))
-            if ord(eventchar) == 8:
+            if ord(eventchar) == 8:  # if is a backspace
                 typedsofar.pop()
             else:
                 typedsofar += eventchar
