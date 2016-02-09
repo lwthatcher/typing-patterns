@@ -1,4 +1,7 @@
 import numpy
+import matplotlib
+matplotlib.interactive(True)
+from matplotlib import pyplot
 
 class ItoATools:
     non_char_chars = \
@@ -49,17 +52,20 @@ class ItoATools:
 
     @classmethod
     def intTupleToCharTuple(self,thetuple):
-        return '('+str(thetuple[0])+":"+self.intToCharString(thetuple[0])+','+str(thetuple[1])+":"+self.intToCharString(thetuple[1])+')'
+        return '('+self.intToCharString(thetuple[0])+','+self.intToCharString(thetuple[1])+')'
 
+    @classmethod
+    def intTupleToCharTupleLong(self,thetuple):
+        return '('+str(thetuple[0])+":"+self.intToCharString(thetuple[0])+','+str(thetuple[1])+":"+self.intToCharString(thetuple[1])+')'
 
 
 class KDAnalyzer:
 
-    def __init__(self,filename,time_interval_threshold):
-        self.loadfile(filename,time_interval_threshold)
+    def __init__(self,filename,time_interval_threshold=1.0,num_top_pairs=10,default_pairs="all"):
+        self.loadfile(filename,time_interval_threshold,num_top_pairs,default_pairs)
         return
 
-    def loadfile(self,filename,time_interval_threshold):
+    def loadfile(self,filename,time_interval_threshold,num_top_pairs,default_pairs):
         self.filename = filename
         self.time_interval_threshold = time_interval_threshold
         data = numpy.loadtxt(filename)
@@ -79,29 +85,79 @@ class KDAnalyzer:
                 pairs[key].append(time_interval)
 
         self.pairs = pairs
+
+        #Building "top_pairs":  The ten pairs most frequently encountered in the data
+        top_pairs_list = []
+        top_count = 0
+        for pair in self.pairs:
+            top_pairs_list.append((pair,self.pairs[pair]))
+            if( len(top_pairs_list) > num_top_pairs ):
+                #remove the item with the lowest count
+                lowest_count = numpy.iinfo(numpy.int64).max
+                found_index = 0
+                for i in range(0,len(top_pairs_list)):
+                    item = top_pairs_list[i]
+                    if(len(item[1]) < lowest_count):
+                        lowest_count = len(item[1])
+                        found_index = i
+                top_pairs_list.pop(found_index)
+
+        self.top_pairs = dict(top_pairs_list)
+
+        #Specific Pairs list
+        specific_pairs_list = [(100,32), (114,32), (101,32), (116,104), (104,97), (114,101), (32,116), (104,101), (97,116), (116,32)]
+        self.specific_pairs = dict()
+        for pair in specific_pairs_list:
+            self.specific_pairs[pair] = self.pairs[pair]
+
+        if(default_pairs == "all"):
+            self.default_pairs = self.pairs
+        elif(default_pairs == "top"):
+            self.default_pairs = self.top_pairs
+        elif(default_pairs == "specific"):
+            self.default_pairs = self.specific_pairs
+
         return
+
+    def printPairs(self):
+        pairs=self.default_pairs
+        for pair in pairs:
+            print(ItoATools.intTupleToCharTuple(pair)+": "+str(pairs[pair]))
+
+    def printPairsSummary(self):
+        # Printing the pairs, but only if the count threshold is high enough.
+        pairs=self.default_pairs
+        for pair in pairs:
+            times_arr = numpy.array(pairs[pair])
+            count = len(times_arr)
+            average_time_interval = times_arr.sum()/count
+            print("Pair: ",ItoATools.intTupleToCharTupleLong(pair),
+                  " Count: ",count,
+                  " Average Time Interval: ",average_time_interval,
+                  " Min: ", numpy.min(pairs[pair]),
+                  " Max: ", numpy.max(pairs[pair]),
+                  " Standard Deviation: ",numpy.std(pairs[pair]))
+
+    def plotBoxPlot(self):
+        pairs=self.default_pairs
+        data_to_plot = []
+        xlabels = []
+        for pair in pairs:
+            data_to_plot.append(pairs[pair])
+            xlabels.append(ItoATools.intTupleToCharTuple(pair))
+        fig = pyplot.figure(figsize=(9, 6))
+        ax = fig.add_subplot(111)
+        bp = ax.boxplot(data_to_plot)
+        pyplot.title(self.filename)
+        ax.set_xticklabels(xlabels)
+        pyplot.ylim((0,self.time_interval_threshold))
 
 
 # Loading data
-print("Loading data...")
+filenames = ["data/steven_gettysburg.txt",
+            "data/nozomu_gettysburg.txt",
+            "data/lawrence_gettysburg.txt"]
 
-filename = "data/steven_gettysburg.txt"
-time_interval_threshold = 1.0
-
-print("File: ",filename)
-
-analyzer = KDAnalyzer(filename,time_interval_threshold)
-asciicodes = analyzer.asciicodes
-timestamps = analyzer.timestamps
-pairs = analyzer.pairs
-
-
-# Printing the pairs, but only if the count threshold is high enough.
-count_threshold = 10
-print("Pairs with count >= "+str(count_threshold)+":")
-for pair in pairs:
-    if( len(pairs[pair]) >= count_threshold ):
-        times_arr = numpy.array(pairs[pair])
-        count = len(times_arr)
-        average_time_interval = times_arr.sum()/count
-        print("Pair: ",ItoATools.intTupleToCharTuple(pair)," Count: ",count," Average Time Interval: ",average_time_interval)
+for filename in filenames:
+    analyzer = KDAnalyzer(filename,time_interval_threshold=1.2,num_top_pairs=10,default_pairs="specific")
+    analyzer.plotBoxPlot()
