@@ -1,0 +1,16 @@
+Note that in the paper, the authors just use a simple formula to calculate scores and then set an arbitrary threshold.  The only part that might be confusing would be setting up the sets that they use in the formula, but I have confidence that Python makes building those sets fairly straight forward.
+
+While I do not like the idea of typing a pre-prepared paragraph, I think that is not a bad place to start.  As the paper mentions, whenever a user sees a paragraph to type, it isn't normal to type it out character by character; it is much more common to either use a quote functionality or just copy-paste the text.  Moreover, typing out a pre-conceived text is quite different from typing out a response to a prompt.  So the follow up task must be typing some pre-prepared paragraph (it would be nice if it weren't the same as before).  On the other hand, it might be natural to show an image of a handwritten paragraph to a user and have the user type out the paragraph, assuming that OCR isn't accurate on the image.  But if OCR isn't accurate on the image, then the handwriting must not be consistent, which suggests that the user takes time deciphering the handwriting---which would be confused with just the time used for typing.
+
+Such are my thoughts.
+
+On Mon, Feb 1, 2016 at 11:01 PM, Steven Schmidt wrote:
+To be honest, I haven't really gotten into forks and branches too much in git, so I'd prefer to just push everything into the master branch, at least for now.  I don't think it'll be too much of a problem to do that for now, at least while we're getting the basic functionality together.  If there are separate ideas or projects (e.g. analyzing data vs collecting data), then maybe keep them in different folders.  I'm not too worried, for now.  If at some future point we want to do something more fancy maybe we could restructure it and start doing that.
+
+I think we can have users type a pre-prepared paragraph or page of text, and use that to "learn" the model.  Then, we can have them type whatever they want and we can see if our algorithm can identify them.  That's what I'm going to try at first, anyway.  It might take experimenting with different ideas to see which will work best.
+
+I think I'll collect my own data (of me typing) and see if I can at least start setting up some code to analyze it.  (implement the paper a bit).  I might not get to it until later in the week, though.
+
+It would be great if all of us took a look at the paper, and tried our own hands at writing some code to implement it, at least to get our heads wrapped around what the paper is saying.  Writing throw-away code at first is a great way to start understanding how to solve the problem best.
+
+-Steven

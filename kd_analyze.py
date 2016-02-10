@@ -157,7 +157,8 @@ class KDAnalyzer:
 filenames = ["data/steven_gettysburg.txt",
              "data/nozomu_gettysburg.txt",
              "data/lawrence_gettysburg.txt",
-             "data/ethan_gettysburg.txt"]
+             "data/ethan_gettysburg.txt",
+             "data/wilson_gettysburg.txt"]
 
 for filename in filenames:
     analyzer = KDAnalyzer(filename,time_interval_threshold=1.2,num_top_pairs=10,default_pairs="specific")
