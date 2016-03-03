@@ -61,17 +61,18 @@ class ItoATools:
 
 class KDAnalyzer:
 
-    def __init__(self,filename,time_interval_threshold=1.0,num_top_pairs=10,default_pairs="all"):
-        self.loadfile(filename,time_interval_threshold,num_top_pairs,default_pairs)
+    def __init__(self,filename,time_interval_threshold=1.0,num_top_pairs=10,freq_level=10,default_pairs="all",id_name="none"):
+        self.loadfile(filename,time_interval_threshold,num_top_pairs,freq_level,default_pairs,id_name)
         return
 
-    def loadfile(self,filename,time_interval_threshold,num_top_pairs,default_pairs):
+    def loadfile(self,filename,time_interval_threshold,num_top_pairs,freq_level,default_pairs,id_name):
         self.filename = filename
         self.time_interval_threshold = time_interval_threshold
         data = numpy.loadtxt(filename)
         self.data = data
         self.asciicodes = data[:,0].astype(numpy.int64)
         self.timestamps = data[:,1]
+        self.id_name = id_name
 
         # Building dictionary of key-strike pairs; ignoring pairs with interval greater
         # than 1 second
@@ -85,6 +86,13 @@ class KDAnalyzer:
                 pairs[key].append(time_interval)
 
         self.pairs = pairs
+
+        #Building "freq_pairs": The pairs that were encountered more than "freq_level" times
+        freq_pairs_list = []
+        for pair in self.pairs:
+            if( len(self.pairs[pair]) >= 15 ):
+                freq_pairs_list.append((pair,self.pairs[pair]))
+        self.freq_pairs = dict(freq_pairs_list)
 
         #Building "top_pairs":  The ten pairs most frequently encountered in the data
         top_pairs_list = []
@@ -153,16 +161,16 @@ class KDAnalyzer:
         pyplot.ylim((0,self.time_interval_threshold))
 
 
-# Loading data
-filenames = ["data/steven_gettysburg.txt",
-             "data/nozomu_gettysburg.txt",
-             "data/lawrence_gettysburg.txt",
-             "data/ethan_gettysburg.txt",
-             "data/wilson_gettysburg.txt",
-             "data/lawrence_emails.txt",
-             "data/steven2_gettysburg.txt"]
+if __name__ == "__main__":
+    # Loading data
+    filenames = ["data/steven_gettysburg.txt",
+                 "data/nozomu_gettysburg.txt",
+                 "data/lawrence_gettysburg.txt",
+                 "data/ethan_gettysburg.txt",
+                 "data/wilson_gettysburg.txt",
+                 "data/lawrence_emails.txt",
+                 "data/steven2_gettysburg.txt"]
 
-for filename in filenames:
-    analyzer = KDAnalyzer(filename,time_interval_threshold=1.2,num_top_pairs=10,default_pairs="specific")
-    analyzer.plotBoxPlot()
-print('woohoo')
+    for filename in filenames:
+        analyzer = KDAnalyzer(filename,time_interval_threshold=1.2,num_top_pairs=10,default_pairs="specific")
+        analyzer.plotBoxPlot()
