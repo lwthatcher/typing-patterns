@@ -11,7 +11,7 @@ import pickle
 from sklearn.neighbors import KernelDensity
 import sys
 
-HISTORY_LENGTH = 100
+HISTORY_LENGTH = 200
 
 class TyperOracle:
     """
@@ -59,7 +59,7 @@ class TyperOracle:
          * ascii_code is an integer code for the latest key press
          * timestamp is a float of the timestamp for the key press
         """
-        if len(self.history) == 0:
+        if len(self.history) == 0 and self.last_keypress == -1:
             self.last_keypress = ascii_code
             self.last_timestamp = timestamp
             return "I don't know"
