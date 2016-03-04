@@ -19,6 +19,7 @@ typing while this program is logging keys.
 import sys
 import tkinter as tk
 import time
+from kd_identify import KDIdentifier
 
 def set_textarea(textarea, showntext):
     ''' Sets text in text area '''
@@ -49,7 +50,7 @@ def highlight_text(textarea, standardtext, typedsofar):
                 position += 1
         textarea.tag_add(tag, '1.0+%dc' % start, '1.0+%dc' % position)
 
-def onkeypress(ofh, textarea, standardtext, typedsofar):
+def onkeypress(ofh, textarea, standardtext, typedsofar, kdidentifier):
     ''' Closure to handle modifying record of what user has typed '''
     def inner_onkeypress(event):
         ''' Callback function for when a character is typed '''
@@ -60,11 +61,14 @@ def onkeypress(ofh, textarea, standardtext, typedsofar):
         if eventchar == '\r':
             eventchar = '\n'
         if len(eventchar) > 0:
-            ofh.write('%d %f\n' % (ord(eventchar), time.time()))
+            t = time.time()
+            ofh.write('%d %f\n' % (ord(eventchar), t))
             if ord(eventchar) == 8:  # if is a backspace
                 typedsofar.pop()
             else:
                 typedsofar += eventchar
+            kdidentifier.processKeystroke(ord(eventchar), t)
+            print("Guess: ", kdidentifier.guess)
         # sys.stdout.write(''.join(typedsofar)+'\n')
         highlight_text(textarea, standardtext, typedsofar)
     return inner_onkeypress
@@ -92,12 +96,18 @@ def run_gui(showntext):
     ''' Initializes global variables and starts gui '''
     standardtext = list(showntext)
     typedsofar = []
-    # keylog = []
+
+    id_names_files = {"steven":"data/steven_gettysburg.txt",
+                      "nozomu":"data/nozomu_gettysburg.txt",
+                      "lawrence":"data/lawrence_gettysburg.txt"}
+
+    kdidentifier = KDIdentifier(id_names_files)
+
     rootwindow = tk.Tk()
     textarea = build_textarea(rootwindow, showntext)
     with open('log.keys', 'w') as ofh:
         rootwindow.bind('<Key>', onkeypress(
-            ofh, textarea, standardtext, typedsofar))
+            ofh, textarea, standardtext, typedsofar, kdidentifier))
         rootwindow.mainloop()
 
 def get_text_from_file(filename):
