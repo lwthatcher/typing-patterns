@@ -1,0 +1,47 @@
+ethan_gettysburg:
+	text: gettysburg.txt
+	author: Ethan
+	computer: Lawrence's workstation
+	gender: M
+
+lawrence_emails:
+	text: emails.txt
+	author: Lawrence
+	computer: Lawrence's workstation
+	gender: M
+
+lawrence_gettysburg:
+	text: gettysburg.txt
+	author: Lawrence
+	computer: Lawrence's workstation
+	gender: M
+
+lawrence_decisiontrees:
+	text: decisiontrees.txt
+	author: Lawrence
+	computer: Lawrence's workstation
+	gender: M
+
+nozomu_gettysburg:
+	text: gettysburg.txt
+	author: Nozomu
+	computer: Nozomu's workstation
+	gender: M
+
+steven_gettysburg:
+	text: gettysburg.txt
+	author: Steven
+	computer: Steven's workstation
+	gender: M
+	
+steven2_gettysburg:
+	text: gettysburg.txt
+	author: Steven
+	computer: Steven's laptop
+	gender: M
+
+wilson_gettysburg:
+	text: gettysburg.txt
+	author: Wilson
+	computer: Lawrence's workstation
+	gender: M
