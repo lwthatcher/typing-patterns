@@ -3,45 +3,117 @@ ethan_gettysburg:
 	author: Ethan
 	computer: Lawrence's workstation
 	gender: M
+	date: 2/8/16
+	vim: true
 
 lawrence_emails:
 	text: emails.txt
 	author: Lawrence
 	computer: Lawrence's workstation
 	gender: M
+	date: 2/10/16
+	vim: false
 
 lawrence_gettysburg:
 	text: gettysburg.txt
 	author: Lawrence
 	computer: Lawrence's workstation
 	gender: M
+	date: 2/8/16
+	vim: false
 
 lawrence_decisiontrees:
 	text: decisiontrees.txt
 	author: Lawrence
 	computer: Lawrence's workstation
 	gender: M
+	date: 3/4/16
+	vim: false
+
+lawrence_obedience_partial:
+	text: obedience.txt
+	author: Lawrence
+	computer: Lawrence's workstation
+	gender: M
+	date: 3/4/16
+	vim: false
+
+lawrence_obedience_partial2:
+	text: obedience.txt
+	author: Lawrence
+	computer: Lawrence's workstation
+	gender: M
+	date: 3/4/16
+	vim: false
+
+lawrence_proclamation_partial:
+	text: proclamation.txt
+	author: Lawrence
+	computer: Lawrence's workstation
+	gender: M
+	date: 3/4/16
+	vim: false
 
 nozomu_gettysburg:
 	text: gettysburg.txt
 	author: Nozomu
 	computer: Nozomu's workstation
 	gender: M
+	date: 2/3/16
+	vim: true
+
+nozomu_obedience:
+	text: obedience.txt
+	author: Nozomu
+	computer: Lawrence's workstation
+	gender: M
+	date: 3/4/16
+	vim: true
 
 steven_gettysburg:
 	text: gettysburg.txt
 	author: Steven
 	computer: Steven's workstation
 	gender: M
+	date: 2/4/16
+	vim: false
 	
 steven2_gettysburg:
 	text: gettysburg.txt
 	author: Steven
 	computer: Steven's laptop
 	gender: M
+	date: 2/10/16
+	vim: false
 
 wilson_gettysburg:
 	text: gettysburg.txt
 	author: Wilson
 	computer: Lawrence's workstation
 	gender: M
+	date: 2/10/16
+	vim: true
+
+wilson_proclamation:
+	text: proclamation.txt
+	author: Wilson
+	computer: Lawrence's workstation
+	gender: M
+	date: 3/4/16
+	vim: true
+
+jeff_decisiontrees:
+	text: decisiontrees.txt
+	author: Jeff
+	computer: Lawrence's workstation
+	gender: M
+	date: 3/4/16
+	vim: true
+
+jeff_obedience:
+	text: obedience.txt
+	author: Jeff
+	computer: Lawrence's workstation
+	gender: M
+	date: 3/4/16
+	vim: true
