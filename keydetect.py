@@ -19,7 +19,9 @@ typing while this program is logging keys.
 import sys
 import tkinter as tk
 import time
+import pickle
 from kd_identify import KDIdentifier
+from typeroracle import TyperOracle
 
 def set_textarea(textarea, showntext):
     ''' Sets text in text area '''
@@ -50,7 +52,7 @@ def highlight_text(textarea, standardtext, typedsofar):
                 position += 1
         textarea.tag_add(tag, '1.0+%dc' % start, '1.0+%dc' % position)
 
-def onkeypress(ofh, textarea, standardtext, typedsofar, kdidentifier):
+def onkeypress(ofh, textarea, standardtext, typedsofar, kdidentifier, oracle):
     ''' Closure to handle modifying record of what user has typed '''
     def inner_onkeypress(event):
         ''' Callback function for when a character is typed '''
@@ -68,7 +70,13 @@ def onkeypress(ofh, textarea, standardtext, typedsofar, kdidentifier):
             else:
                 typedsofar += eventchar
             kdidentifier.processKeystroke(ord(eventchar), t)
-            print("Guess: ", kdidentifier.guess)
+            guess_i = kdidentifier.guess
+            if oracle is not None:
+                guess_o = oracle.process_keystroke(ord(eventchar), t)
+                print("Guess: ", guess_i, guess_o)
+            else:
+                print("Guess: ", guess_i)
+
         # sys.stdout.write(''.join(typedsofar)+'\n')
         highlight_text(textarea, standardtext, typedsofar)
     return inner_onkeypress
@@ -92,7 +100,7 @@ def build_textarea(rootwindow, showntext):
     textarea.tag_configure('incorrect', background='red', foreground='black')
     return textarea
 
-def run_gui(showntext):
+def run_gui(showntext, oracle_file=None):
     ''' Initializes global variables and starts gui '''
     standardtext = list(showntext)
     typedsofar = []
@@ -102,12 +110,16 @@ def run_gui(showntext):
                       "lawrence":"data/lawrence_gettysburg.txt"}
 
     kdidentifier = KDIdentifier(id_names_files)
+    oracle = None
+    if oracle_file is not None:
+        with open(oracle_file, "rb") as ifh:
+            oracle = pickle.load(ifh)
 
     rootwindow = tk.Tk()
     textarea = build_textarea(rootwindow, showntext)
     with open('log.keys', 'w') as ofh:
         rootwindow.bind('<Key>', onkeypress(
-            ofh, textarea, standardtext, typedsofar, kdidentifier))
+            ofh, textarea, standardtext, typedsofar, kdidentifier, oracle))
         rootwindow.mainloop()
 
 def get_text_from_file(filename):
@@ -120,5 +132,8 @@ if __name__ == '__main__':
     if len(sys.argv) < 2:
         sys.stdout.write('No text to show\n')
         sys.exit(0)
-    run_gui(get_text_from_file(sys.argv[1]))
+    if len(sys.argv) < 3:
+        sys.stdout.write('No oracle to use\n')
+        run_gui(get_text_from_file(sys.argv[1]))
+    run_gui(get_text_from_file(sys.argv[1]), sys.argv[2])
 
