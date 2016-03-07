@@ -117,3 +117,19 @@ jeff_obedience:
 	gender: M
 	date: 3/4/16
 	vim: true
+
+joseph_gettysburg:
+	text: gettysburg.txt
+	author: Joseph
+	computer: Lawrence's workstation
+	gender: M
+	date: 3/7/16
+	vim: false
+
+joseph_obedience:
+	text: obedience.txt
+	author: Joseph
+	computer: Lawrence's workstation
+	gender: M
+	date: 3/7/16
+	vim: false
