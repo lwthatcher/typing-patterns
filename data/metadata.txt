@@ -102,6 +102,14 @@ wilson_proclamation:
 	date: 3/4/16
 	vim: true
 
+wilson_obedience:
+	text: obedience.txt
+	author: Wilson
+	computer: Lawrence's workstation
+	gender: M
+	date: 3/9/16
+	vim: true
+
 jeff_decisiontrees:
 	text: decisiontrees.txt
 	author: Jeff
