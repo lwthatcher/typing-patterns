@@ -22,6 +22,7 @@ import time
 import pickle
 from kd_identify import KDIdentifier
 from typeroracle import TyperOracle
+from hmm_oracle import HmmOracle
 
 def set_textarea(textarea, showntext):
     ''' Sets text in text area '''
