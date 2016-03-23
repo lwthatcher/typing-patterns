@@ -110,6 +110,14 @@ wilson_obedience:
 	date: 3/9/16
 	vim: true
 
+wilson_gettysburg:
+	text: gettysburg.txt
+	author: Wilson
+	computer: Lawrence's workstation
+	gender: M
+	date: 3/23/16
+	vim: true
+
 jeff_decisiontrees:
 	text: decisiontrees.txt
 	author: Jeff
