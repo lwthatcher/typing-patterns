@@ -171,7 +171,7 @@ if __name__ == "__main__":
 
     inputfiles = ["data/wilson_obedience.txt",
                   "data/lawrence_emails.txt",
-                  "data/steven2_gettysburg.txt",
+                  "data/steven_gettysburg3.txt",
                   "data/nozomu_obedience.txt",
                   "data/joseph_obedience.txt"]
 
@@ -179,7 +179,7 @@ if __name__ == "__main__":
     # by reading in the file top-to-bottom as if the person was typing it.
 
     # Open the input file
-    inputdata = numpy.loadtxt(inputfiles[4])
+    inputdata = numpy.loadtxt(inputfiles[2])
     asciicodes = inputdata[:,0].astype(numpy.int64)
     timestamps = inputdata[:,1]
 

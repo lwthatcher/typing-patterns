@@ -162,7 +162,7 @@ class KDAnalyzer:
         fig = pyplot.figure(figsize=(9, 6))
         ax = fig.add_subplot(111)
         bp = ax.boxplot(data_to_plot)
-        pyplot.title(self.filename)
+        pyplot.title(self.filenames[0])
         ax.set_xticklabels(xlabels)
         pyplot.ylim((0,self.time_interval_threshold))
 
@@ -175,8 +175,8 @@ if __name__ == "__main__":
                  "data/ethan_gettysburg.txt",
                  "data/wilson_gettysburg.txt",
                  "data/lawrence_emails.txt",
-                 "data/steven2_gettysburg.txt"]
+                 "data/steven_gettysburg2.txt"]
 
     for filename in filenames:
-        analyzer = KDAnalyzer(filename,time_interval_threshold=1.2,num_top_pairs=10,default_pairs="specific")
+        analyzer = KDAnalyzer([filename],time_interval_threshold=1.2,num_top_pairs=10,default_pairs="specific")
         analyzer.plotBoxPlot()
