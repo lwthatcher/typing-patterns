@@ -58,14 +58,20 @@ class ItoATools:
 
 class KDAnalyzer:
 
-    def __init__(self,filename,time_interval_threshold=1.0,num_top_pairs=10,freq_level=10,default_pairs="all",id_name="none"):
-        self.loadfile(filename,time_interval_threshold,num_top_pairs,freq_level,default_pairs,id_name)
+    def __init__(self,filenames,time_interval_threshold=1.0,num_top_pairs=10,freq_level=10,default_pairs="all",id_name="none"):
+        self.loadfile(filenames,time_interval_threshold,num_top_pairs,freq_level,default_pairs,id_name)
         return
 
-    def loadfile(self,filename,time_interval_threshold,num_top_pairs,freq_level,default_pairs,id_name):
-        self.filename = filename
+    def loadfile(self,filenames,time_interval_threshold,num_top_pairs,freq_level,default_pairs,id_name):
+        self.filenames = filenames
         self.time_interval_threshold = time_interval_threshold
-        data = numpy.loadtxt(filename)
+        data_list = []
+        for filename in filenames:
+            data = numpy.loadtxt(filename)
+            data_list.append(data)
+        self.data = data_list[0]
+        for i in range(1,len(data_list)):
+            self.data = numpy.concatenate((self.data,data_list[i]),axis=0)
         self.data = data
         self.asciicodes = data[:,0].astype(numpy.int64)
         self.timestamps = data[:,1]
