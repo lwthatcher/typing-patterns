@@ -1,7 +1,4 @@
 import numpy
-import matplotlib
-matplotlib.interactive(True)
-from matplotlib import pyplot
 
 class ItoATools:
     non_char_chars = \
@@ -147,6 +144,9 @@ class KDAnalyzer:
                   " Standard Deviation: ",numpy.std(pairs[pair]))
 
     def plotBoxPlot(self):
+        import matplotlib
+        matplotlib.interactive(True)
+        from matplotlib import pyplot
         pairs=self.default_pairs
         data_to_plot = []
         xlabels = []
