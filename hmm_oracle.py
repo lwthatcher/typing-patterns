@@ -74,7 +74,7 @@ class HmmOracle:
         self.last_keypress = ascii_code
         # self._update_currentdata(timestamp)
         self.last_timestamp = timestamp
-        return self.predict(self.history)
+        return self.predict(self.history[-HISTORY_LENGTH:])
 
     def _update_currentdata(self, timestamp):
         """
@@ -104,12 +104,13 @@ def build_typeroracle(training):
     models = {}
     for k, v in labeledtimelists.items():
         values = np.array(v)
-        models[k] = hmm.GaussianHMM(n_components=3)
+        m = hmm.GaussianHMM(n_components=3)
+        m.fit(values)
+        models[k] = m
         models[k].fit(values)
 
     # notinall = _get_limited_keypairs(userlist, labeledtimelists)
     # prekeypairlist = _get_legal_keypairs(labeledtimelists, notinall)
-    # TODO if there are too many KDEs, prune by choosing best N
     # keypairlist = prekeypairlist
     # labeledkdes = _build_labeledkdes(keypairlist, userlist, labeledtimelists)
     # return TyperOracle(keypairlist, userlist, labeledkdes)
