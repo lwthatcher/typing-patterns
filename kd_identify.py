@@ -46,8 +46,8 @@ def normal_pdf(std,mean,x):
 class KDIdentifier:
 
     # *** KDIdentifier init ***
-    # id_names_files:  A dictionary, the keys are the known identity names, and the values
-    #                  are the file paths of the data defining each identity.
+    # id_names_files:  A dictionary, the each key is the known identity name, and each value
+    #                  is a list of file paths of the data defining that identity.
     # time_interval_threshold: The maximum amount if time between keystrokes to be considered
     # freq_level: The minimum frequency of a key-pair event, before that set of events is considered.
     # history_length: The length of the history of events to rely on to compute the guess.
@@ -163,11 +163,11 @@ class KDIdentifier:
 
 
 if __name__ == "__main__":
-    id_names_files = {"steven":"data/steven_gettysburg.txt",
-                      "nozomu":"data/nozomu_gettysburg.txt",
-                      "lawrence":"data/lawrence_gettysburg.txt",
-                      "joseph":"data/joseph_gettysburg.txt",
-                      "wilson":"data/wilson_gettysburg.txt"}
+    id_names_files = {"steven":["data/steven_gettysburg.txt","data/steven_gettysburg2.txt"],
+                      "nozomu":["data/nozomu_gettysburg.txt"],
+                      "lawrence":["data/lawrence_gettysburg.txt"],
+                      "joseph":["data/joseph_gettysburg.txt"],
+                      "wilson":["data/wilson_gettysburg.txt"]}
 
     inputfiles = ["data/wilson_obedience.txt",
                   "data/lawrence_emails.txt",
