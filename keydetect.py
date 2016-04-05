@@ -16,6 +16,7 @@ such that the background is red (and the letter remains black).
 Remember that this program is a keylogger.  Don't type anything you will regret
 typing while this program is logging keys.
 '''
+import argparse
 import sys
 import tkinter as tk
 import time
@@ -53,7 +54,7 @@ def highlight_text(textarea, standardtext, typedsofar):
                 position += 1
         textarea.tag_add(tag, '1.0+%dc' % start, '1.0+%dc' % position)
 
-def onkeypress(ofh, textarea, standardtext, typedsofar, kdidentifier, oracle):
+def onkeypress(ofh, textarea, standardtext, typedsofar, kdidentifier, oracles):
     ''' Closure to handle modifying record of what user has typed '''
     def inner_onkeypress(event):
         ''' Callback function for when a character is typed '''
@@ -72,11 +73,12 @@ def onkeypress(ofh, textarea, standardtext, typedsofar, kdidentifier, oracle):
                 typedsofar += eventchar
             kdidentifier.processKeystroke(ord(eventchar), t)
             guess_i = kdidentifier.guess
-            if oracle is not None:
+
+            guess_str = "Guess: " + str(guess_i)
+            for oracle in oracles:
                 guess_o = oracle.process_keystroke(ord(eventchar), t)
-                print("Guess: ", guess_i, guess_o)
-            else:
-                print("Guess: ", guess_i)
+                guess_str += " " + str(guess_o)
+            print(guess_str)
 
         # sys.stdout.write(''.join(typedsofar)+'\n')
         highlight_text(textarea, standardtext, typedsofar)
@@ -101,7 +103,7 @@ def build_textarea(rootwindow, showntext):
     textarea.tag_configure('incorrect', background='red', foreground='black')
     return textarea
 
-def run_gui(showntext, oracle_file=None):
+def run_gui(showntext, _oracles_files=None):
     ''' Initializes global variables and starts gui '''
     standardtext = list(showntext)
     typedsofar = []
@@ -112,15 +114,19 @@ def run_gui(showntext, oracle_file=None):
 
     kdidentifier = KDIdentifier(id_names_files)
     oracle = None
-    if oracle_file is not None:
-        with open(oracle_file, "rb") as ifh:
-            oracle = pickle.load(ifh)
 
+    if _oracles_files is None:
+        _oracles_files = []
+    oracles = []
+    for _o in _oracles_files:
+        with open(_o, "rb") as ifh:
+            oracle = pickle.load(ifh)
+            oracles.append(oracle)
     rootwindow = tk.Tk()
     textarea = build_textarea(rootwindow, showntext)
     with open('log.keys', 'w') as ofh:
         rootwindow.bind('<Key>', onkeypress(
-            ofh, textarea, standardtext, typedsofar, kdidentifier, oracle))
+            ofh, textarea, standardtext, typedsofar, kdidentifier, oracles))
         rootwindow.mainloop()
 
 def get_text_from_file(filename):
@@ -130,11 +136,15 @@ def get_text_from_file(filename):
     return result
 
 if __name__ == '__main__':
-    if len(sys.argv) < 2:
-        sys.stdout.write('No text to show\n')
-        sys.exit(0)
-    if len(sys.argv) < 3:
-        sys.stdout.write('No oracle to use\n')
-        run_gui(get_text_from_file(sys.argv[1]))
-    run_gui(get_text_from_file(sys.argv[1]), sys.argv[2])
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--source', '-s',
+                        default='docs/gettysburg.txt',
+                        help='the source text file to use as input')
+    parser.add_argument('--oracles', '-o',
+                        nargs='*',
+                        help='a list of the oracle files to use as oracles.')
+    args = parser.parse_args()
+
+    text = get_text_from_file(args.source)
+    run_gui(text, args.oracles)
 
