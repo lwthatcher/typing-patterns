@@ -185,7 +185,7 @@ if __name__ == "__main__":
 
     kdidentifier = KDIdentifier(id_names_files,
                                 history_length=100,
-                                use_log_norm_pdf=True)
+                                use_log_norm_pdf=False)
 
     # Now, iterate through each pair of letters, as if getting them from a live-stream
     for i in range(0,len(timestamps)):
@@ -201,7 +201,8 @@ if __name__ == "__main__":
                                 freq_level=10,
                                 id_name=id)
 
-    set = test_analyzer.freq_pairs[(32,119)]
+    #set = test_analyzer.freq_pairs[(32,119)]
+    set = test_analyzer.freq_pairs[(114,32)]
     x = numpy.linspace(0+1e-12,numpy.max(set)+0.1,200)
 
     mean=numpy.mean(set)
@@ -218,6 +219,13 @@ if __name__ == "__main__":
         pyplot.plot(x,normal_pdf(std,mean,x))
 
     pyplot.plot(set,numpy.zeros(len(set)),'*')
-    pyplot.ylim([-0.5,3.0])
+    if(kdidentifier.use_log_norm_pdf):
+        pyplot.ylim([-0.5,4.0])
+        pyplot.title("Example ASCII-code pair time intervals with estimated Log-Normal PDF")
+    else:
+        pyplot.ylim([-0.5,4.0])
+        pyplot.title("Example ASCII-code pair time intervals with estimated Normal PDF")
     pyplot.xlim([0,numpy.max(set)+0.1])
-    pyplot.title("Example keystroke times with estimated normal")
+   
+    pyplot.xlabel("Time interval (seconds)")
+    pyplot.ylabel("Probability density")
