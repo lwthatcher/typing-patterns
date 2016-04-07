@@ -9,7 +9,7 @@ np = numpy
 
 # id_names_files: dictionary
 # input_file: string
-def test_permutation(id_names_files,input_file):
+def test_permutation(id_names_files, input_file):
 
     # Open the input file
     inputdata = numpy.loadtxt(input_file)
@@ -37,7 +37,7 @@ def test_permutation(id_names_files,input_file):
 
 
 
-id_names = ["steven","nozomu","wilson"]
+id_names = ["steven", "nozomu", "wilson", "lawrence", "jeff", "joseph"]
 file_base_names = ["gettysburg"]
 file_postfixes = [".txt","2.txt","3.txt"]
 
