@@ -105,7 +105,7 @@ def build_typeroracle(training):
     for k, v in labeledtimelists.items():
         X = v[0]
         lengths = []
-        for i in range(1,len(v)):
+        for i in range(1, len(v)):
             data_set = np.array(v[i])
             X = np.concatenate([X, data_set])
             lengths.append(len(data_set))
@@ -167,75 +167,6 @@ def _get_training_data(training, userlist):
             #         labeledtimelists[label][keypair] = []
             #     labeledtimelists[label][keypair].extend(data[keypair])
     return labeledtimelists
-
-def _get_limited_keypairs(userlist, labeledtimelists):
-    """
-    limited, as an antonym of universal: so this function grabs those key-pairs
-    not present in every user"s data
-     * userlist is a list of users
-     * labeledtimelists is a dictionary of label: {keypair: [timing]}
-
-    returns a dictionary of keypair: True
-    """
-    notinall = {}
-    for i in range(len(userlist)):
-        for j in range(i+1, len(userlist)):
-            for keypair in labeledtimelists[userlist[i]]:
-                if keypair not in labeledtimelists[userlist[j]]:
-                    notinall[keypair] = True
-    return notinall
-
-def _get_legal_keypairs(labeledtimelists, notinall):
-    """
-     * labeledtimelists is a dictionary of label: {keypair: [timing]}
-     * notinall denotes which key-pairs are not legal; it is a dictionary of
-       keypair: True
-
-    returns list of legal key-pairs
-    """
-    legal = []
-    for _, keypairs in labeledtimelists.items():
-        for keypair in keypairs:
-            if keypair not in notinall:
-                legal.append(keypair)
-        # we actually need only the first data set to determine what the legal
-        # key-pairs are
-        break
-    return legal
-
-def _build_labeledkdes(keypairlist, userlist, labeledtimelists):
-    """
-     * labeledtimelists is a dictionary of label: {keypair: [timing]}
-     * userlist is a list of users
-     * labeledtimelists is a dictionary of label: {keypair: [timing]}
-
-    returns a dictionary of label: {keypair: kde}
-    """
-    labeledkdes = {}
-    for user in userlist:
-        labeledkdes[user] = {}
-        for keypair in keypairlist:
-            timings = labeledtimelists[user][keypair]
-            kde = KernelDensity()
-            kde.fit(np.reshape(timings, (len(timings), 1)))
-            labeledkdes[user][keypair] = kde
-    return labeledkdes
-
-def _kde_kl(kde_p, kde_q, n_samples=10**5):
-    """
-     * kde_p is a trained instance of sklearn.neighbors.KernelDensity
-     * kde_q is a trained instance of sklearn.neighbors.KernelDensity
-     * n_samples is the number of samples to take in making the calculation
-
-    returns an estimate of KL(kde_p || kde_q), the KL divergence
-
-    inspired by
-    http://stackoverflow.com/questions/26079881/kl-divergence-of-two-gmms
-    """
-    samples = kde_p.sample(n_samples)
-    log_p_samples, _ = kde_p.score_samples(samples)
-    log_q_samples, _ = kde_q.score_samples(samples)
-    return log_p_samples.mean() - log_q_samples.mean()
 
 def _train_model(args):
     """
