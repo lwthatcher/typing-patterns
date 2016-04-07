@@ -6,10 +6,6 @@ import hmm_oracle
 import numpy
 np = numpy
 
-id_names = ["steven","nozomu"]
-file_base_names = ["gettysburg"]
-file_postfixes = [".txt","2.txt","3.txt"]
-
 
 # id_names_files: dictionary
 # input_file: string
@@ -40,6 +36,11 @@ def test_permutation(id_names_files,input_file):
             "hhmoracle" : hmmoracle_guess}
 
 
+
+id_names = ["steven","nozomu","wilson"]
+file_base_names = ["gettysburg"]
+file_postfixes = [".txt","2.txt","3.txt"]
+
 for leaveoutindex in range(0,3):
 
     # Construct the training data input, and test input file list
@@ -58,7 +59,7 @@ for leaveoutindex in range(0,3):
         id_names_files[id] = files_for_id
         input_files[id] = input_file
 
-    print("Leaving out index: ",leaveoutindex)
+    print("Input index used for testing: ",leaveoutindex, " (others used for training)")
 
     # Test on each test input.
     for id in id_names:
