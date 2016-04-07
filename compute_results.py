@@ -1,12 +1,10 @@
 from kd_analyze import KDAnalyzer
 from kd_analyze import ItoATools
 from kd_identify import *
+import typeroracle
+import hmm_oracle
 import numpy
 np = numpy
-
-id_names = ["steven","nozomu"]
-file_base_names = ["gettysburg"]
-file_postfixes = [".txt","2.txt","3.txt"]
 
 
 # id_names_files: dictionary
@@ -21,14 +19,27 @@ def test_permutation(id_names_files,input_file):
     kdidentifier = KDIdentifier(id_names_files,
                                 history_length=100,
                                 use_log_norm_pdf=True)
+                                
+    tyoracidentifier = typeroracle.build_typeroracle(id_names_files)
+    
+    hmmoracidentifier = hmm_oracle.build_typeroracle(id_names_files)
 
     # Now, iterate through each pair of letters, as if getting them from a live-stream
     for i in range(0,len(timestamps)):
+        #print("flag,",i)
         kdidentifier.processKeystroke(asciicodes[i],timestamps[i])
-        #print("Guess: ",kdidentifier.guess, " Probabs: ",kdidentifier.prob_sums)
+        typeroracle_guess = tyoracidentifier.process_keystroke(asciicodes[i],timestamps[i])
+        hmmoracle_guess = hmmoracidentifier.process_keystroke(asciicodes[i],timestamps[i])
 
-    return kdidentifier.guess
+    return {"log-norm": kdidentifier.guess,
+            "typeroracle" : typeroracle_guess,
+            "hhmoracle" : hmmoracle_guess}
 
+
+
+id_names = ["steven","nozomu","wilson"]
+file_base_names = ["gettysburg"]
+file_postfixes = [".txt","2.txt","3.txt"]
 
 for leaveoutindex in range(0,3):
 
@@ -48,12 +59,12 @@ for leaveoutindex in range(0,3):
         id_names_files[id] = files_for_id
         input_files[id] = input_file
 
-    print("Leaving out index: ",leaveoutindex)
+    print("Input index used for testing: ",leaveoutindex, " (others used for training)")
 
     # Test on each test input.
     for id in id_names:
         guess = test_permutation(id_names_files,input_files[id])
-        print("Guess for '"+id+"': "+guess)
+        print("Guess for '"+id+"': "+str(guess))
 
     
 
