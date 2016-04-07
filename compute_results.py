@@ -37,7 +37,7 @@ def test_permutation(id_names_files, input_file):
 
 
 
-id_names = ["steven", "nozomu", "wilson", "lawrence", "jeff", "joseph"]
+id_names = ["joseph", "steven", "nozomu", "wilson", "lawrence", "jeff"]
 file_base_names = ["gettysburg"]
 file_postfixes = [".txt","2.txt","3.txt"]
 

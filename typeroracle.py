@@ -4,6 +4,7 @@ Attempt at classification via KDE voting
 Build KDEs from key-pair timing information, then use majority vote for
 classification.
 """
+import random
 import argparse
 import numpy as np
 import os
@@ -51,7 +52,9 @@ class TyperOracle:
                         bestlabel = i
                 if bestlabel >= 0:
                     votes.append(bestlabel)
-        return self.userlist[np.argmax(np.bincount(votes))]
+        if votes:
+            return self.userlist[np.argmax(np.bincount(votes))]
+        return random.randint(0, len(self.userlist))
 
     def process_keystroke(self, ascii_code, timestamp):
         """
