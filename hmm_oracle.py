@@ -103,11 +103,15 @@ def build_typeroracle(training):
 
     models = {}
     for k, v in labeledtimelists.items():
-        values = np.array(v)
+        X = v[0]
+        lengths = []
+        for i in range(1,len(v)):
+            data_set = np.array(v[i])
+            X = np.concatenate([X, data_set])
+            lengths.append(len(data_set))
         m = hmm.GaussianHMM(n_components=3)
-        m.fit(values)
+        m.fit(X, lengths)
         models[k] = m
-        models[k].fit(values)
 
     # notinall = _get_limited_keypairs(userlist, labeledtimelists)
     # prekeypairlist = _get_legal_keypairs(labeledtimelists, notinall)
@@ -153,7 +157,9 @@ def _get_training_data(training, userlist):
     for label in userlist:
         for filename in training[label]:
             data = _load_data(filename)
-            labeledtimelists[label] = data
+            if label not in labeledtimelists:
+                labeledtimelists[label] = []
+            labeledtimelists[label].append(data)
             # if label not in labeledtimelists:
             #     labeledtimelists[label] = {}
             # for keypair in data:
