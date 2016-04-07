@@ -108,9 +108,29 @@ def run_gui(showntext, _oracles_files=None):
     standardtext = list(showntext)
     typedsofar = []
 
-    id_names_files = {"steven":   ["data/steven_gettysburg.txt"],
-                      "nozomu":   ["data/nozomu_gettysburg.txt"],
-                      "lawrence": ["data/lawrence_gettysburg.txt"]}
+    id_names_files = {'lawrence': ['oracle/lawrence/lawrence_gettysburg2.txt',
+                                   'oracle/lawrence/lawrence_obedience_partial.txt',
+                                   'oracle/lawrence/lawrence_emails.txt',
+                                   'oracle/lawrence/lawrence_proclamation_partial.txt',
+                                   'oracle/lawrence/lawrence_gettysburg.txt',
+                                   'oracle/lawrence/lawrence_obedience_partial2.txt',
+                                   'oracle/lawrence/lawrence_decisiontrees.txt'],
+                      'nozomu': ['oracle/nozomu/nozomu_gettysburg2.txt',
+                                 'oracle/nozomu/nozomu_obedience.txt',
+                                 'oracle/nozomu/nozomu_gettysburg.txt',
+                                 'oracle/nozomu/nozomu_gettysburg3.txt'],
+                      'jeff': ['oracle/jeff/jeff_gettysburg.txt',
+                               'oracle/jeff/jeff_decisiontrees.txt',
+                               'oracle/jeff/jeff_obedience.txt'],
+                      'wilson': ['oracle/wilson/wilson_gettysburg3.txt',
+                                 'oracle/wilson/wilson_gettysburg.txt',
+                                 'oracle/wilson/wilson_gettysburg2.txt',
+                                 'oracle/wilson/wilson_proclamation.txt',
+                                 'oracle/wilson/wilson_obedience.txt'],
+                      'steven': ['oracle/steven/steven_gettysburg3.txt',
+                                 'oracle/steven/steven_gettysburg.txt',
+                                 'oracle/steven/steven_gettysburg2.txt'],
+                      'joseph': ['oracle/joseph/joseph_obedience.txt', 'oracle/joseph/joseph_gettysburg.txt']}
 
     kdidentifier = KDIdentifier(id_names_files,use_log_norm_pdf=True)
     oracle = None
