@@ -108,11 +108,11 @@ def run_gui(showntext, _oracles_files=None):
     standardtext = list(showntext)
     typedsofar = []
 
-    id_names_files = {"steven": ["data/steven_gettysburg.txt"],
-                      "nozomu": ["data/nozomu_gettysburg.txt"],
+    id_names_files = {"steven":   ["data/steven_gettysburg.txt"],
+                      "nozomu":   ["data/nozomu_gettysburg.txt"],
                       "lawrence": ["data/lawrence_gettysburg.txt"]}
 
-    kdidentifier = KDIdentifier(id_names_files)
+    kdidentifier = KDIdentifier(id_names_files,use_log_norm_pdf=True)
     oracle = None
 
     if _oracles_files is None:
