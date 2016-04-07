@@ -70,6 +70,22 @@ nozomu_gettysburg:
 	date: 2/3/16
 	vim: true
 
+nozomu_gettysburg2:
+	text: gettysburg.txt
+	author: Nozomu
+	computer: Nozomu's workstation
+	gender: M
+	date: 4/6/16
+	vim: true
+
+nozomu_gettysburg3:
+	text: gettysburg.txt
+	author: Nozomu
+	computer: Nozomu's workstation
+	gender: M
+	date: 4/6/16
+	vim: true
+
 nozomu_obedience:
 	text: obedience.txt
 	author: Nozomu
@@ -86,12 +102,20 @@ steven_gettysburg:
 	date: 2/4/16
 	vim: false
 	
-steven2_gettysburg:
+steven_gettysburg2:
 	text: gettysburg.txt
 	author: Steven
 	computer: Steven's laptop
 	gender: M
 	date: 2/10/16
+	vim: false
+
+steven_gettysburg3:
+	text: gettysburg.txt
+	author: Steven
+	computer: Steven's laptop
+	gender: M
+	date: 4/5/16
 	vim: false
 
 wilson_gettysburg:
